@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!-- Parent -->
+    <parent>
+        <groupId>org.jboss.arquillian.container</groupId>
+        <artifactId>arquillian-parent-was</artifactId>
+        <version>1.0.0.Final</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <!-- Model Version -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Artifact Configuration -->
+    <artifactId>ws-dependencies</artifactId>
+
+    <properties>
+        <lib_location>/home/vramik/shared</lib_location>
+    </properties>
+    
+    <!-- Build -->
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-property</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireProperty>
+                                    <property>lib_location</property>
+                                </requireProperty>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>install-external-jar1</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <file>${lib_location}/lib/com.ibm.ws.admin.client_8.5.0.jar</file>
+                            <repositoryLayout>default</repositoryLayout>
+                            <groupId>com.ibm.websphere</groupId>
+                            <artifactId>ws-admin-client</artifactId>
+                            <version>8.5.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install-external-jar2</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <file>${lib_location}/lib/com.ibm.ws.orb_8.5.0.jar</file>
+                            <repositoryLayout>default</repositoryLayout>
+                            <groupId>com.ibm.websphere</groupId>
+                            <artifactId>ibmorb</artifactId>
+                            <version>8.5.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.ibm.websphere</groupId>
+                                    <artifactId>ws-admin-client</artifactId>
+                                    <version>8.5.0</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${basedir}/target/classes</outputDirectory>
+                                    <!--<includes>**/*.class,**/*.xml</includes>-->
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.ibm.websphere</groupId>
+                                    <artifactId>ibmorb</artifactId>
+                                    <version>8.5.0</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${basedir}/target/classes</outputDirectory>
+                                    <!--<includes>**/*.class,**/*.xml</includes>-->
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
