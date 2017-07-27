@@ -6,7 +6,6 @@
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
         <version>16</version>
-        <relativePath />
     </parent>
 
     <!-- Model Version -->
@@ -15,7 +14,7 @@
     <!-- Artifact Configuration -->
     <groupId>org.jboss.arquillian.container</groupId>
     <artifactId>arquillian-parent-was</artifactId>
-    <version>1.0.0.Final-SNAPSHOT</version>
+    <version>1.0.0.Final</version>
     <packaging>pom</packaging>
     <name>Arquillian Container Parent WebSphere AS</name>
     <description>WebSphere AS Container integrations for the Arquillian Project</description>
@@ -61,6 +60,20 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.8</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <nexusUrl>https://repository.jboss.org/nexus</nexusUrl>
+                        <serverId>jboss-releases-repository</serverId>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
@@ -91,6 +104,23 @@
             <modules>
                 <module>was-remote-9</module>
             </modules>
+        </profile>
+        <profile>
+            <id>custom</id>
+            <modules>
+                <module>was-remote-8.5</module>
+                <module>ws-dependencies</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>nexus</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
